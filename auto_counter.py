@@ -1,12 +1,20 @@
+import re
+
 path_to_file = "/home/zak-holmes/Vault/Brain/"
 
 file_name = "Apriltest.md"
+
+TOTAL_IN=2100
+NUMBER_REGEX=r"[-+]?\d+\.\d+"
+
+
 
 # things for this to do
 #     - Count all the sub totals (start with $, end with = )
 #     - Count the categries (every number inbetween headings / #)
 
-# Minor improvments - proper functions 
+# Minor improvments - proper functions
+# - Replace the $ and = notation with just a regex search that looks for numbers 
 
 def sub_totals(file_path):
 
@@ -56,9 +64,52 @@ def count_categories(file_path):
     with open(file_path, 'w', encoding='utf-8') as f:
         f.writelines(lines)
 
+def out_report_generator(file_path):
+    total_out = []
+    with open (file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    sub_report = []
+    for line in lines:
+        cat_index = line.find("##")
+        if cat_index != -1:
+            cat_total = re.search(NUMBER_REGEX, line).group()
+            total_out.append(float(cat_total))
+            sub_report.append(f"- {line[2:]}")
+    
+    rounded_total = round(sum(total_out),2)
 
-sub_totals(path_to_file + file_name)
+    output = [
+    f"# Total in - {TOTAL_IN} \n"
+    f"# Total out - {rounded_total} \n"
+    f"# Profit - {round(TOTAL_IN - rounded_total,2)} \n"
+    f"## Out report - {rounded_total} \n"
+    ]
 
-count_categories(path_to_file + file_name)
+    for sub in sub_report:
+        output.append(f"{sub}")
+    
+    updated_file = lines[:3] + output + lines[3:]
+    print(output)
+
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.writelines(updated_file)
+
+
+def main():
+    #sub_totals(path_to_file + file_name)
+
+    #count_categories(path_to_file + file_name)
+
+    out_report_generator(path_to_file + file_name)
+
+
+main()
+
+
+
+
+
+
+
 
 
