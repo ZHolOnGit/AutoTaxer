@@ -1,6 +1,6 @@
 import re
 
-path_to_file = "/home/zak-holmes/Vault/Brain/"
+path_to_file = "/Users/zaza/Main/ObsidianVault/Brain/"
 
 file_name = "Maytest.md"
 
