@@ -2,10 +2,10 @@ import re
 
 path_to_file = "/home/zak-holmes/Vault/Brain/"
 
-file_name = "Apriltest.md"
+file_name = "Maytest.md"
 
 TOTAL_IN=2100
-NUMBER_REGEX=r"[-+]?\d+\.\d+"
+NUMBER_REGEX=r"[-+]?\d*\.?\d+"
 
 
 
@@ -23,14 +23,11 @@ def sub_totals(file_path):
 
     modified_lines = []
     for line in lines:
-        dollar_index = line.find("$")
-        equals_index = line.find("=")
-        if dollar_index != -1 and equals_index != -1:
-            amount_sub = line[dollar_index + 1:equals_index].split("+")
-            total = 0
-            for amount in amount_sub:
-                total += float(amount.strip())
-            new_line = f"{line.rstrip("\n")} {total:.2f}\n"
+        dash_index = line.find("-")
+        numbers = [float(x) for x in re.findall(NUMBER_REGEX, line)]
+        if len(numbers) != 0:
+            total = sum(numbers)
+            new_line = f"{line.rstrip("\n")} = {total:.2f}\n"
             print(new_line)
             modified_lines.append(new_line)
         else:
@@ -96,9 +93,9 @@ def out_report_generator(file_path):
 
 
 def main():
-    #sub_totals(path_to_file + file_name)
+    sub_totals(path_to_file + file_name)
 
-    #count_categories(path_to_file + file_name)
+    count_categories(path_to_file + file_name)
 
     out_report_generator(path_to_file + file_name)
 
