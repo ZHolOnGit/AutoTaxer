@@ -7,15 +7,6 @@ file_name = "Maytest.md"
 TOTAL_IN=2100
 NUMBER_REGEX=r"[-+]?\d*\.?\d+"
 
-
-
-# things for this to do
-#     - Count all the sub totals (start with $, end with = )
-#     - Count the categries (every number inbetween headings / #)
-
-# Minor improvments - proper functions
-# - Replace the $ and = notation with just a regex search that looks for numbers 
-
 def sub_totals(file_path):
 
     with open (file_path, 'r', encoding='utf-8') as f:
